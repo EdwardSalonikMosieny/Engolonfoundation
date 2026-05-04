@@ -195,7 +195,7 @@ body.menu-open .nav-menu a {
 .hero-media {
   position: absolute;
   inset: 0;
-  background-image: url("../assets/images/school-support.jpeg");
+  background-image: url("../assets/images/pic5.jpeg");
   background-size: cover;
   background-position: center 42%;
   background-repeat: no-repeat;
@@ -239,6 +239,12 @@ body.menu-open .nav-menu a {
   font-family: "Inter", Arial, sans-serif;
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   line-height: 1.35;
+}
+
+.meaning-caption {
+  margin: -4px 0 14px;
+  color: var(--red);
+  font-weight: 800;
 }
 
 .programs .section-heading .eyebrow,
@@ -838,87 +844,120 @@ h2 {
   font-size: 1.05rem;
 }
 
-.gallery-slider {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  background: var(--charcoal);
-  box-shadow: var(--shadow);
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.gallery-track {
-  display: flex;
-  transition: transform 0.65s ease;
-  will-change: transform;
-}
-
-.gallery-slide {
-  flex: 0 0 100%;
-  margin: 0;
-  aspect-ratio: 16 / 9;
-  min-height: 520px;
-}
-
-.gallery-slide img {
+.gallery-grid button {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  cursor: pointer;
 }
 
-.gallery-control {
+.gallery-grid img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 24px rgba(24, 21, 19, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.gallery-grid button:hover img,
+.gallery-grid button:focus-visible img {
+  transform: scale(1.03);
+  box-shadow: 0 18px 38px rgba(24, 21, 19, 0.18);
+}
+
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.lightbox-modal.is-open {
+  display: flex;
+}
+
+.lightbox-backdrop {
   position: absolute;
-  top: 50%;
+  inset: 0;
+  background: rgba(8, 7, 6, 0.84);
+  backdrop-filter: blur(6px);
+}
+
+.lightbox-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 980px);
+  display: grid;
+  place-items: center;
+}
+
+.lightbox-dialog img {
+  max-width: 100%;
+  max-height: 78svh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+}
+
+.lightbox-caption {
+  margin: 14px 56px 0;
+  color: var(--white);
+  text-align: center;
+}
+
+.lightbox-close,
+.lightbox-control {
+  position: absolute;
   z-index: 2;
-  width: 46px;
-  height: 46px;
   border: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
   color: var(--red);
-  font-size: 1.4rem;
-  font-weight: 800;
   cursor: pointer;
-  transform: translateY(-50%);
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.gallery-control:hover {
+.lightbox-close {
+  top: -12px;
+  right: -12px;
+  width: 42px;
+  height: 42px;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.lightbox-control {
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  transform: translateY(-50%);
+}
+
+.lightbox-prev {
+  left: -12px;
+}
+
+.lightbox-next {
+  right: -12px;
+}
+
+.lightbox-close:hover,
+.lightbox-control:hover {
   background: var(--nav-gold);
   color: var(--charcoal);
-  transform: translateY(-50%) scale(1.06);
-}
-
-.gallery-prev {
-  left: 18px;
-}
-
-.gallery-next {
-  right: 18px;
-}
-
-.gallery-dots {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  z-index: 2;
-  display: flex;
-  gap: 9px;
-  transform: translateX(-50%);
-}
-
-.gallery-dot {
-  width: 10px;
-  height: 10px;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.62);
-  cursor: pointer;
-}
-
-.gallery-dot.is-active {
-  width: 28px;
-  border-radius: 999px;
-  background: var(--nav-gold);
 }
 
 .contact {
@@ -1000,6 +1039,13 @@ h2 {
   color: var(--red);
   font-weight: 800;
   overflow-wrap: anywhere;
+}
+
+.contact-person {
+  display: block;
+  margin-top: 8px;
+  color: var(--charcoal);
+  font-weight: 800;
 }
 
 .site-footer {
@@ -1351,27 +1397,45 @@ h2 {
     grid-column: 1 / -1;
   }
 
-  .gallery-slide {
-    min-height: 300px;
-    aspect-ratio: 4 / 3;
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
-  .gallery-control {
-    width: 38px;
-    height: 38px;
-    font-size: 1.1rem;
+  .gallery-grid img {
+    height: 180px;
   }
 
-  .gallery-prev {
-    left: 10px;
+  .lightbox-modal {
+    padding: 12px;
   }
 
-  .gallery-next {
-    right: 10px;
+  .lightbox-dialog img {
+    max-height: 72svh;
   }
 
-  .gallery-dots {
-    bottom: 12px;
+  .lightbox-close {
+    top: 8px;
+    right: 8px;
+  }
+
+  .lightbox-control {
+    top: auto;
+    bottom: -58px;
+    transform: none;
+  }
+
+  .lightbox-prev {
+    left: calc(50% - 56px);
+  }
+
+  .lightbox-next {
+    right: calc(50% - 56px);
+  }
+
+  .lightbox-caption {
+    margin: 12px 0 64px;
+    font-size: 0.9rem;
   }
 
   .footer-bottom {
@@ -1442,7 +1506,9 @@ h2 {
 .budget .section-heading .eyebrow,
 .stories .section-heading .eyebrow,
 .gallery .section-heading .eyebrow,
-.contact-heading .eyebrow {
+.contact-heading .eyebrow,
+.donation-dialog .eyebrow {
+  color: var(--gold);
   font-size: clamp(1.55rem, 3vw, 2.45rem);
   letter-spacing: 0;
   line-height: 1.12;

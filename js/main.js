@@ -6,12 +6,15 @@
   const donationDialog = donationModal ? donationModal.querySelector(".donation-dialog") : null;
   const donationOpeners = document.querySelectorAll("[data-donate-open]");
   const donationClosers = document.querySelectorAll("[data-donation-close]");
-  const gallerySlider = document.querySelector("[data-gallery-slider]");
-  const galleryTrack = document.querySelector("[data-gallery-track]");
-  const gallerySlides = galleryTrack ? Array.from(galleryTrack.children) : [];
-  const galleryPrev = document.querySelector("[data-gallery-prev]");
-  const galleryNext = document.querySelector("[data-gallery-next]");
-  const galleryDots = document.querySelector("[data-gallery-dots]");
+  const lightboxModal = document.querySelector("[data-lightbox-modal]");
+  const lightboxDialog = lightboxModal ? lightboxModal.querySelector(".lightbox-dialog") : null;
+  const lightboxImage = document.querySelector("[data-lightbox-image]");
+  const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+  const lightboxOpeners = Array.from(document.querySelectorAll("[data-lightbox-open]"));
+  const lightboxClosers = document.querySelectorAll("[data-lightbox-close]");
+  const lightboxPrev = document.querySelector("[data-lightbox-prev]");
+  const lightboxNext = document.querySelector("[data-lightbox-next]");
+  let activeLightboxIndex = 0;
 
   const closeMenu = () => {
     if (!toggle || !menu) return;
@@ -102,6 +105,35 @@
     document.body.classList.remove("modal-open");
   };
 
+  const showLightboxImage = (index) => {
+    if (!lightboxImage || !lightboxOpeners.length) return;
+    activeLightboxIndex = (index + lightboxOpeners.length) % lightboxOpeners.length;
+    const image = lightboxOpeners[activeLightboxIndex].querySelector("img");
+    if (!image) return;
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
+    if (lightboxCaption) lightboxCaption.textContent = image.alt;
+  };
+
+  const openLightbox = (index) => {
+    if (!lightboxModal) return;
+    showLightboxImage(index);
+    lightboxModal.classList.add("is-open");
+    lightboxModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    if (lightboxDialog) lightboxDialog.focus();
+  };
+
+  const closeLightbox = () => {
+    if (!lightboxModal) return;
+    lightboxModal.classList.remove("is-open");
+    lightboxModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  };
+
+  const showPreviousLightboxImage = () => showLightboxImage(activeLightboxIndex - 1);
+  const showNextLightboxImage = () => showLightboxImage(activeLightboxIndex + 1);
+
   donationOpeners.forEach((button) => {
     button.addEventListener("click", openDonationModal);
   });
@@ -110,61 +142,26 @@
     button.addEventListener("click", closeDonationModal);
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeDonationModal();
+  lightboxOpeners.forEach((button, index) => {
+    button.addEventListener("click", () => openLightbox(index));
   });
 
-  if (gallerySlider && galleryTrack && gallerySlides.length) {
-    let activeSlide = 0;
-    let slideTimer = null;
+  lightboxClosers.forEach((button) => {
+    button.addEventListener("click", closeLightbox);
+  });
 
-    const dots = gallerySlides.map((slide, index) => {
-      const dot = document.createElement("button");
-      dot.className = "gallery-dot";
-      dot.type = "button";
-      dot.setAttribute("aria-label", `Show gallery image ${index + 1}`);
-      dot.addEventListener("click", () => {
-        showSlide(index);
-        restartSlider();
-      });
-      if (galleryDots) galleryDots.appendChild(dot);
-      return dot;
-    });
+  if (lightboxPrev) lightboxPrev.addEventListener("click", showPreviousLightboxImage);
+  if (lightboxNext) lightboxNext.addEventListener("click", showNextLightboxImage);
 
-    const showSlide = (index) => {
-      activeSlide = (index + gallerySlides.length) % gallerySlides.length;
-      galleryTrack.style.transform = `translateX(-${activeSlide * 100}%)`;
-      dots.forEach((dot, dotIndex) => {
-        dot.classList.toggle("is-active", dotIndex === activeSlide);
-      });
-    };
-
-    const nextSlide = () => showSlide(activeSlide + 1);
-    const previousSlide = () => showSlide(activeSlide - 1);
-
-    const restartSlider = () => {
-      window.clearInterval(slideTimer);
-      slideTimer = window.setInterval(nextSlide, 4500);
-    };
-
-    if (galleryNext) {
-      galleryNext.addEventListener("click", () => {
-        nextSlide();
-        restartSlider();
-      });
+  document.addEventListener("keydown", (event) => {
+    const isLightboxOpen = lightboxModal && lightboxModal.classList.contains("is-open");
+    if (event.key === "Escape") {
+      closeDonationModal();
+      closeLightbox();
     }
-
-    if (galleryPrev) {
-      galleryPrev.addEventListener("click", () => {
-        previousSlide();
-        restartSlider();
-      });
-    }
-
-    gallerySlider.addEventListener("mouseenter", () => window.clearInterval(slideTimer));
-    gallerySlider.addEventListener("mouseleave", restartSlider);
-    showSlide(0);
-    restartSlider();
-  }
+    if (!isLightboxOpen) return;
+    if (event.key === "ArrowLeft") showPreviousLightboxImage();
+    if (event.key === "ArrowRight") showNextLightboxImage();
+  });
 
 })();
