@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Scholarship Support Program Launch",
+    "date": "2026-04-30",
+    "description": "Engolon Foundation is mobilizing support to help Maasai girls access school fees, uniforms, books, and other essential learning materials.",
+    "image": "assets/images/school-support.jpeg",
+    "category": "Scholarships",
+    "link": "#donate"
+  },
+  {
+    "title": "Community Awareness Meeting in Laikipia North",
+    "date": "2026-04-30",
+    "description": "Community conversations are helping parents, guardians, and leaders protect girls from early marriages and support education.",
+    "image": "assets/images/community-outreach.jpeg",
+    "category": "Community",
+    "link": "#contact"
+  },
+  {
+    "title": "Mentorship Program for Maasai Girls",
+    "date": "2026-04-30",
+    "description": "Mentors and tutors are being connected with girls to provide academic guidance, encouragement, and personal development support.",
+    "image": "assets/images/girl-in-school.jpeg",
+    "category": "Mentorship",
+    "link": "#programs"
+  }
+]

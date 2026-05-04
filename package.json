@@ -1,0 +1,9 @@
+{
+  "name": "engolon-foundation-static-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static website for Engolon Foundation.",
+  "scripts": {
+    "dev": "node .preview-server.js"
+  }
+}
