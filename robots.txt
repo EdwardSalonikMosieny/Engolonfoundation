@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://engolonfoundation.co.ke/sitemap.xml
