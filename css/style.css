@@ -1100,6 +1100,11 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.footer-credit a {
+  display: inline;
+  margin: 0;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);
