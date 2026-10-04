@@ -1094,6 +1094,17 @@ h2 {
   margin: 4px 0;
 }
 
+.footer-credit {
+  color: var(--nav-gold);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.footer-credit a {
+  display: inline;
+  margin: 0;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -1437,6 +1448,10 @@ h2 {
     line-height: 1.5;
   }
 
+  .footer-credit {
+    display: block;
+    margin-top: 8px;
+  }
 }
 
 @media (max-width: 380px) {
